@@ -14,7 +14,7 @@ fi
 
 if [ -d linux-5.4 ] && [ ! -f linux-5.4/include/config/auto.conf ]; then
     echo "[*] Preparing kernel headers..."
-    make -C linux-5.4 modules_prepare > /dev/null 2>&1
+    echo 2 | make -C linux-5.4 modules_prepare
     if [ ! -f linux-5.4/include/config/auto.conf ]; then
         echo "[-] Error: Failed to prepare kernel headers."
         exit 1
@@ -28,6 +28,7 @@ if [ -f src/Makefile ]; then
         make -C src
         exit 1
     fi
+    mkdir -p ./rootfs
     cp src/*.ko ./rootfs/
     
     if ls chall/*.ko 1> /dev/null 2>&1; then
