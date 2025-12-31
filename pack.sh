@@ -17,9 +17,14 @@ if [ -f src/Makefile ]; then
 		echo "[+] Kernel module compiled successfully."
 fi
 
-if [ -f exploit.c ]; then
-    echo "[+] Compiling exploit..."
-    gcc -static ./exploit/exploit.c -o ./rootfs/exploit
+count=$(ls exploit/*.c 2>/dev/null | wc -l)
+if [ "$count" -ne 0 ]; then
+    echo "[+] Compiling exploits..."
+    for f in exploit/*.c; do
+        filename=$(basename "$f" .c)
+        gcc -static "$f" -o "./rootfs/$filename"
+        echo "    - $f -> ./rootfs/$filename"
+    done
 fi
 
 if [ -f ./busybox ]; then
