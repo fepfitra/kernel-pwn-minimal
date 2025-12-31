@@ -4,7 +4,7 @@ KERNEL_VERSION=5.4
 
 all: 
 	echo $(OBJECTS)
-	make -C ../linux-$(KERNEL_VERSION) M=$(PWD) modules
+	make -C ../linux-$(KERNEL_VERSION) M=$(CURDIR) modules
 
 clean:
-	make -C ../linux-$(KERNEL_VERSION) M=$(PWD) clean
+	make -C ../linux-$(KERNEL_VERSION) M=$(CURDIR) clean

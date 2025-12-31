@@ -9,12 +9,20 @@ fi
 
 if [ -f src/Makefile ]; then
     echo "[+] Compiling kernel module..."
-		cd src
-    make > /dev/null 2>&1
-		cd ..
-		cp src/*.ko ./rootfs/
-		cp chall/*.ko ./rootfs/
-		echo "[+] Kernel module compiled successfully."
+    if ! make -C src > /dev/null; then
+        echo "[-] Error: Kernel module compilation failed."
+        make -C src # Run again to show output
+        exit 1
+    fi
+    cp src/*.ko ./rootfs/
+    
+    if ls chall/*.ko 1> /dev/null 2>&1; then
+        cp chall/*.ko ./rootfs/
+    else
+        echo "[-] Warning: No modules found in chall/"
+    fi
+    
+    echo "[+] Kernel module compiled successfully."
 fi
 
 count=$(ls exploit/*.c 2>/dev/null | wc -l)
