@@ -14,9 +14,10 @@ fi
 
 if [ -d linux-5.4 ] && [ ! -f linux-5.4/include/config/auto.conf ]; then
     echo "[*] Preparing kernel headers..."
-    make -C linux-5.4 modules_prepare > /dev/null 2>&1
+    yes "" | make -C linux-5.4 modules_prepare > /dev/null 2>&1
     if [ ! -f linux-5.4/include/config/auto.conf ]; then
         echo "[-] Error: Failed to prepare kernel headers."
+        yes "" | make -C linux-5.4 modules_prepare
         exit 1
     fi
 fi
