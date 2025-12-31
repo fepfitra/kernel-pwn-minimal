@@ -29,6 +29,7 @@ if [ -f src/Makefile ]; then
         make -C src
         exit 1
     fi
+    mkdir -p ./rootfs
     cp src/*.ko ./rootfs/
     
     if ls chall/*.ko 1> /dev/null 2>&1; then
