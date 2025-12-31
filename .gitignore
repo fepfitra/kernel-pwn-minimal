@@ -6,7 +6,6 @@
 *.d
 Module.symvers
 modules.order
-bzImage
 initramfs.cpio.gz
 .gdb_history
 exploit
