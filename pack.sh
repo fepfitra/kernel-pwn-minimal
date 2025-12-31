@@ -7,11 +7,21 @@ if [ -f linux-5.4/vmlinux ]; then
     cp linux-5.4/vmlinux ./vmlinux
 fi
 
+if [ -d linux-5.4 ] && [ ! -f linux-5.4/.config ]; then
+    echo "[*] Extracting config from bzImage..."
+    ./linux-5.4/scripts/extract-ikconfig bzImage > linux-5.4/.config
+fi
+
+if [ -d linux-5.4 ] && [ ! -f linux-5.4/include/config/auto.conf ]; then
+    echo "[*] Preparing kernel headers..."
+    make -C linux-5.4 modules_prepare > /dev/null 2>&1
+fi
+
 if [ -f src/Makefile ]; then
     echo "[+] Compiling kernel module..."
     if ! make -C src > /dev/null; then
         echo "[-] Error: Kernel module compilation failed."
-        make -C src # Run again to show output
+        make -C src
         exit 1
     fi
     cp src/*.ko ./rootfs/
