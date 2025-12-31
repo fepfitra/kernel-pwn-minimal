@@ -49,7 +49,7 @@ static long device_ioctl(struct file *filp, unsigned int ioctl_num,
 
 static struct file_operations fops = {.read = device_read,
                                       .write = device_write,
-                                      .proc_ioctl = device_ioctl,
+                                      .unlocked_ioctl = device_ioctl,
                                       .open = device_open,
                                       .release = device_release};
 
