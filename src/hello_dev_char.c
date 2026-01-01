@@ -19,12 +19,12 @@ static int device_release(struct inode *inode, struct file *filp) {
 
 // static ssize_t device_read(struct file *filp, char *buffer, size_t length,
 //                            loff_t *offset) {
-//   char *msg = "Hello kernel-pwn!\n";
+//   char *msg = "Hello hello-dev!\n";
 //   return copy_to_user(buffer, msg, strlen(msg)) ? -EFAULT : 0;
 // }
 static ssize_t device_read(struct file *filp, char *buffer, size_t length,
                            loff_t *offset) {
-  char *msg = "Hello kernel-pwn!\n";
+  char *msg = "Hello hello-dev!\n";
   size_t msg_len = strlen(msg);
   size_t bytes_read;
 
@@ -57,7 +57,7 @@ static struct file_operations fops = {.read = device_read,
                                       .release = device_release};
 
 int init_module(void) {
-  major_number = register_chrdev(0, "kernel-pwn-char", &fops);
+  major_number = register_chrdev(0, "hello-dev-char", &fops);
 
   if (major_number < 0) {
     printk(KERN_ALERT "Registering char device failed with %d\n", major_number);
@@ -65,11 +65,9 @@ int init_module(void) {
   }
 
   printk(KERN_INFO "I was assigned major number %d.\n", major_number);
-  printk(KERN_INFO "Create device with: 'mknod /dev/kernel-pwn-char c %d 0'.\n",
+  printk(KERN_INFO "Create device with: 'mknod /dev/hello-dev-char c %d 0'.\n",
          major_number);
   return 0;
 }
 
-void cleanup_module(void) {
-  unregister_chrdev(major_number, "kernel-pwn-char");
-}
+void cleanup_module(void) { unregister_chrdev(major_number, "hello-dev-char"); }
