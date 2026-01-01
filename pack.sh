@@ -55,7 +55,7 @@ if [ -f ./busybox ]; then
     echo "[+] Updating busybox and symlinks..."
     mkdir -p ./rootfs/bin
     cp ./busybox ./rootfs/bin/
-    for cmd in sh ls cat mkdir mount poweroff id insmod chmod chown grep dmesg; do
+    for cmd in sh ls cat mkdir mount poweroff id insmod chmod chown grep dmesg mknod; do
         ln -sf busybox "./rootfs/bin/$cmd"
     done
 		cp ./init ./rootfs/

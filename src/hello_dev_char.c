@@ -48,8 +48,7 @@ int init_module(void) {
   }
 
   printk(KERN_INFO "I was assigned major number %d.\n", major_number);
-  printk(KERN_INFO
-         "Create device with: 'mknod /dev/kernel-pwn-char c %d 0'.\n",
+  printk(KERN_INFO "Create device with: 'mknod /dev/kernel-pwn-char c %d 0'.\n",
          major_number);
   return 0;
 }
