@@ -25,7 +25,24 @@ static int device_release(struct inode *inode, struct file *filp) {
 static ssize_t device_read(struct file *filp, char *buffer, size_t length,
                            loff_t *offset) {
   char *msg = "Hello kernel-pwn!\n";
-  return strlen(msg) - copy_to_user(buffer, msg, strlen(msg));
+  size_t msg_len = strlen(msg);
+  size_t bytes_read;
+
+  if (*offset >= msg_len) {
+    return 0;
+  }
+
+  bytes_read = msg_len - *offset;
+  if (bytes_read > length) {
+    bytes_read = length;
+  }
+
+  if (copy_to_user(buffer, msg + *offset, bytes_read)) {
+    return -EFAULT;
+  }
+
+  *offset += bytes_read;
+  return bytes_read;
 }
 
 static ssize_t device_write(struct file *filp, const char *buf, size_t len,
