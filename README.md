@@ -5,7 +5,7 @@ This directory contains a standalone environment for testing kernel exploits.
 ## Structure
 - `bzImage`: The kernel image.
 - `busybox`: Multi-call binary for the rootfs utilities.
-- `chall/`: Directory containing the challenge kernel module.
+- `chall/`: Directory containing the challenge binary and kernel module.
 - `exploit/`: Directory containing exploit source files (all `.c` files here are compiled).
 - `linux-5.4/`: Kernel source tree.
 - `pack.sh`: Script to compile the exploit and generate the `initramfs.cpio.gz`.

@@ -2,6 +2,11 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 cd "$SCRIPT_DIR"
 
+if [ -d rootfs ]; then
+		echo "[*] Cleaning up previous rootfs..."
+		rm -rf ./rootfs
+fi
+
 if [ -f linux-5.4/vmlinux ]; then
     echo "[+] Copying vmlinux symbols..."
     cp linux-5.4/vmlinux ./vmlinux
@@ -32,8 +37,9 @@ if [ -f src/Makefile ]; then
     mkdir -p ./rootfs
     cp src/*.ko ./rootfs/
     
+		mkdir -p ./rootfs/challenge
     if ls chall/*.ko 1> /dev/null 2>&1; then
-        cp chall/*.ko ./rootfs/
+        cp chall/* ./rootfs/challenge/ -r
     else
         echo "[-] Warning: No modules found in chall/"
     fi
