@@ -35,7 +35,9 @@ if [ -f src/Makefile ]; then
         exit 1
     fi
     mkdir -p ./rootfs
+    mkdir -p ./rootfs/bin ./rootfs/proc ./rootfs/sys ./rootfs/dev ./rootfs/tmp ./rootfs/lib ./rootfs/etc
     cp src/*.ko ./rootfs/
+    make -C src clean > /dev/null
     
 		mkdir -p ./rootfs/challenge
     if ls chall/*.ko 1> /dev/null 2>&1; then
@@ -57,11 +59,21 @@ if [ "$count" -ne 0 ]; then
     done
 fi
 
+if ls exploit/*.sh 1> /dev/null 2>&1; then
+    echo "[+] Copying exploit scripts..."
+    for f in exploit/*.sh; do
+        filename=$(basename "$f")
+        cp "$f" "./rootfs/$filename"
+        chmod +x "./rootfs/$filename"
+        echo "    - $f -> ./rootfs/$filename"
+    done
+fi
+
 if [ -f ./busybox ]; then
     echo "[+] Updating busybox and symlinks..."
     mkdir -p ./rootfs/bin
     cp ./busybox ./rootfs/bin/
-    for cmd in sh ls cat mkdir mount poweroff id insmod chmod chown grep dmesg mknod tail; do
+    for cmd in sh ls cat mkdir mount poweroff id insmod chmod chown grep dmesg mknod tail su; do
         ln -sf busybox "./rootfs/bin/$cmd"
     done
 		cp ./init ./rootfs/
