@@ -4,9 +4,12 @@ mount -t proc none /proc
 mount -t sysfs none /sys
 mount -t devtmpfs devtmpfs /dev
 
-echo "falg" > /flag
-
-echo "--- Minimal Kernel Pwn Environment ---"
-dmesg | grep -v "clocksource"
+# Set up non-root user
+echo "root:x:0:0:root:/root:/bin/sh" > /etc/passwd
+echo "pwn:x:1000:1000:pwn:/home/pwn:/bin/sh" >> /etc/passwd
+echo "root:x:0:" > /etc/group
+echo "pwn:x:1000:" >> /etc/group
+mkdir -p /home/pwn
+chown 1000:1000 /home/pwn
 
 exec /bin/sh
